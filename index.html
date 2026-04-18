@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sakura Translations — Traduções de Visual Novels</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Google Fonts: Playfair Display (título) + Lato (corpo) + Noto Serif JP (acento japonês) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@300;400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ======================== PÉTALAS CAINDO ======================== -->
+  <div id="petals-container" aria-hidden="true"></div>
+
+  <!-- ======================== NAVBAR ======================== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="nav-logo">🌸</span>
+      <span class="nav-title">Sakura <em>Translations</em></span>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#jogos" class="nav-link">Jogos</a></li>
+      <li><a href="#enviar" class="nav-link">Enviar Tradução</a></li>
+      <li><a href="#ranking" class="nav-link">Ranking</a></li>
+      <li><a href="#sobre" class="nav-link">Sobre</a></li>
+    </ul>
+  </nav>
+
+  <!-- ======================== HERO ======================== -->
+  <header class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">桜の翻訳プロジェクト</p>
+      <h1 class="hero-title">Sakura<br /><em>Translations</em></h1>
+      <p class="hero-subtitle">
+        Traduções de jogos RenPy para o português do Brasil — com cuidado, carinho e fidelidade.
+      </p>
+      <div class="hero-actions">
+        <a href="#jogos" class="btn btn-primary">Ver Jogos</a>
+        <a href="#enviar" class="btn btn-ghost">Enviar Tradução</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">↓</div>
+  </header>
+
+  <!-- ======================== ESTATÍSTICAS ======================== -->
+  <section class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-number" data-target="48">0</span>
+      <span class="stat-label">Traduções</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="23">0</span>
+      <span class="stat-label">Tradutores</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="12400">0</span>
+      <span class="stat-label">Downloads</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="5">0</span>
+      <span class="stat-label">Gêneros</span>
+    </div>
+  </section>
+
+  <!-- ======================== SEÇÃO JOGOS ======================== -->
+  <section class="section" id="jogos">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">🎮 Jogos Traduzidos</h2>
+        <p class="section-subtitle">Explore nossa coleção de visual novels em português</p>
+      </div>
+
+      <!-- Busca e Filtro -->
+      <div class="search-area">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Buscar jogo... (ex: embriao, romance, ação)"
+            autocomplete="off"
+          />
+          <button class="search-clear" id="searchClear" aria-label="Limpar busca">×</button>
+        </div>
+        <div class="filter-pills" id="filterPills">
+          <button class="pill active" data-genre="todos">Todos</button>
+          <button class="pill" data-genre="romance">Romance</button>
+          <button class="pill" data-genre="aventura">Aventura</button>
+          <button class="pill" data-genre="fantasia">Fantasia</button>
+          <button class="pill" data-genre="misterio">Mistério</button>
+          <button class="pill" data-genre="comedia">Comédia</button>
+        </div>
+      </div>
+
+      <!-- Grid de Jogos -->
+      <div class="games-grid" id="gamesGrid">
+        <!-- Cards injetados por script.js -->
+      </div>
+      <p class="no-results hidden" id="noResults">Nenhum jogo encontrado. Tente outro termo. 🌸</p>
+    </div>
+  </section>
+
+  <!-- ======================== MODAL DE JOGO ======================== -->
+  <div class="modal-overlay hidden" id="gameModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+      <div class="modal-cover-wrap">
+        <img src="" alt="" id="modalCover" class="modal-cover" />
+        <span class="modal-genre-badge" id="modalGenre"></span>
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-translator">Traduzido por <strong id="modalTranslator"></strong></p>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-actions">
+          <a href="#" id="modalDownload" class="btn btn-primary" target="_blank" rel="noopener">⬇ Download</a>
+          <button class="btn btn-like" id="modalLike">👍 <span id="modalLikeCount">0</span></button>
+        </div>
+        <p class="modal-status" id="modalStatus"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== RANKING ======================== -->
+  <section class="section section-alt" id="ranking">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">🏆 Ranking de Tradutores</h2>
+        <p class="section-subtitle">Nossos heróis do português — ordenados por avaliações</p>
+      </div>
+      <div class="ranking-list" id="rankingList">
+        <!-- Injetado por script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== ENVIO DE TRADUÇÃO ======================== -->
+  <section class="section" id="enviar">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">📤 Enviar Tradução</h2>
+        <p class="section-subtitle">Sua tradução passará por revisão antes de ser publicada</p>
+      </div>
+
+      <div class="form-card">
+        <div class="form-notice">
+          <span>🌸</span>
+          <span>Após o envio, sua tradução ficará com status <strong>Pendente</strong> até ser aprovada pela equipe.</span>
+        </div>
+
+        <!-- Usando Formspree para envio real — substitua YOUR_FORM_ID pelo seu ID -->
+        <form id="submitForm" class="submit-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="gameTitle">Nome do Jogo <span class="required">*</span></label>
+              <input type="text" id="gameTitle" name="gameTitle" placeholder="Ex: Katawa Shoujo" required />
+              <span class="field-error" id="err-gameTitle"></span>
+            </div>
+            <div class="form-group">
+              <label for="genre">Gênero <span class="required">*</span></label>
+              <select id="genre" name="genre" required>
+                <option value="">Selecione...</option>
+                <option value="romance">Romance</option>
+                <option value="aventura">Aventura</option>
+                <option value="fantasia">Fantasia</option>
+                <option value="misterio">Mistério</option>
+                <option value="comedia">Comédia</option>
+                <option value="outro">Outro</option>
+              </select>
+              <span class="field-error" id="err-genre"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="translatorName">Seu Nome / Apelido <span class="required">*</span></label>
+              <input type="text" id="translatorName" name="translatorName" placeholder="Ex: sakura_dev" required />
+              <span class="field-error" id="err-translatorName"></span>
+            </div>
+            <div class="form-group">
+              <label for="downloadLink">Link de Download <span class="required">*</span></label>
+              <input type="url" id="downloadLink" name="downloadLink" placeholder="https://..." required />
+              <span class="field-error" id="err-downloadLink"></span>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label for="description">Descrição do Jogo <span class="required">*</span></label>
+            <textarea id="description" name="description" rows="4" placeholder="Conte um pouco sobre a história do jogo..." required></textarea>
+            <span class="field-error" id="err-description"></span>
+          </div>
+
+          <div class="form-group full">
+            <label for="coverUrl">URL da Capa (imagem)</label>
+            <input type="url" id="coverUrl" name="coverUrl" placeholder="https://exemplo.com/capa.jpg" />
+          </div>
+
+          <!-- Campo oculto para identificar status -->
+          <input type="hidden" name="status" value="pendente" />
+          <input type="hidden" name="_subject" value="[Sakura Translations] Nova tradução enviada" />
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-large" id="submitBtn">
+              🌸 Enviar Tradução
+            </button>
+          </div>
+        </form>
+
+        <!-- Feedback de envio -->
+        <div class="form-success hidden" id="formSuccess">
+          <div class="success-icon">🌸</div>
+          <h3>Tradução enviada!</h3>
+          <p>Obrigado pela contribuição. Sua tradução está <strong>pendente de aprovação</strong> e será revisada em breve.</p>
+          <button class="btn btn-ghost" id="sendAnother">Enviar outra</button>
+        </div>
+      </div>
+
+      <!-- Painel de Moderação (oculto por padrão, protegido por senha simples) -->
+      <div class="mod-panel-toggle">
+        <button class="btn btn-ghost btn-small" id="openMod">🔐 Painel de Moderação</button>
+      </div>
+      <div class="mod-panel hidden" id="modPanel">
+        <div class="mod-auth hidden" id="modAuth">
+          <input type="password" id="modPassword" placeholder="Senha de moderação" />
+          <button class="btn btn-primary btn-small" id="modLogin">Entrar</button>
+          <p class="mod-hint">Senha padrão: <code>sakura2025</code></p>
+        </div>
+        <div class="mod-content hidden" id="modContent">
+          <h3 class="mod-title">📋 Traduções Pendentes</h3>
+          <div id="pendingList" class="pending-list">
+            <!-- Injetado por script.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== SOBRE ======================== -->
+  <section class="section section-alt" id="sobre">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">🌸 Sobre o Projeto</h2>
+        <p class="section-subtitle">Uma comunidade feita com amor por visual novels</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <span class="about-icon">🎮</span>
+          <h3>Nossa Missão</h3>
+          <p>Tornar as melhores visual novels japonesas acessíveis para todos os falantes de português do Brasil, com traduções fiéis e revisadas.</p>
+        </div>
+        <div class="about-card">
+          <span class="about-icon">🤝</span>
+          <h3>Comunidade</h3>
+          <p>Qualquer pessoa pode contribuir com traduções. Nosso time de moderadores garante a qualidade antes da publicação.</p>
+        </div>
+        <div class="about-card">
+          <span class="about-icon">⚙️</span>
+          <h3>Tecnologia</h3>
+          <p>Especializados em jogos feitos com RenPy — a engine mais popular para visual novels independentes.</p>
+        </div>
+        <div class="about-card">
+          <span class="about-icon">🌸</span>
+          <h3>Gratuito</h3>
+          <p>Todas as traduções são disponibilizadas gratuitamente. Nosso único objetivo é crescer a comunidade de VNs no Brasil.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span>🌸</span>
+      <span class="footer-title">Sakura Translations</span>
+    </div>
+    <p class="footer-copy">© 2025 Sakura Translations — Feito com 💗 para a comunidade BR de Visual Novels</p>
+    <p class="footer-sub">桜の翻訳プロジェクト</p>
+  </footer>
+
+  <!-- ======================== TOAST DE NOTIFICAÇÃO ======================== -->
+  <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
