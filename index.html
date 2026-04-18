@@ -2,10 +2,21 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    FIX #1 — VIEWPORT (raiz do problema "parece desktop no mobile"):
+    Adicionado viewport-fit=cover para iOS Safari respeitar safe areas.
+    Sem "width=device-width, initial-scale=1.0" o browser usa um viewport
+    virtual de 980px e encolhe tudo, causando o efeito de "zoom 50%".
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!--
+    FIX #2 — Previne zoom automático do iOS Safari em inputs:
+    iOS dá zoom quando font-size < 16px em inputs. Esse meta desativa isso
+    sem desabilitar o zoom do usuário (que seria acessibilidade ruim).
+  -->
+  <meta name="format-detection" content="telephone=no" />
   <title>Sakura Translations — Traduções de Visual Novels</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- Google Fonts: Playfair Display (título) + Lato (corpo) + Noto Serif JP (acento japonês) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@300;400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
@@ -79,8 +90,6 @@
         <h2 class="section-title">🎮 Jogos Traduzidos</h2>
         <p class="section-subtitle">Explore nossa coleção de visual novels em português</p>
       </div>
-
-      <!-- Busca e Filtro -->
       <div class="search-area">
         <div class="search-wrapper">
           <span class="search-icon">🔍</span>
@@ -88,7 +97,7 @@
             type="text"
             id="searchInput"
             class="search-input"
-            placeholder="Buscar jogo... (ex: embriao, romance, ação)"
+            placeholder="Buscar jogo..."
             autocomplete="off"
           />
           <button class="search-clear" id="searchClear" aria-label="Limpar busca">×</button>
@@ -102,11 +111,7 @@
           <button class="pill" data-genre="comedia">Comédia</button>
         </div>
       </div>
-
-      <!-- Grid de Jogos -->
-      <div class="games-grid" id="gamesGrid">
-        <!-- Cards injetados por script.js -->
-      </div>
+      <div class="games-grid" id="gamesGrid"></div>
       <p class="no-results hidden" id="noResults">Nenhum jogo encontrado. Tente outro termo. 🌸</p>
     </div>
   </section>
@@ -139,9 +144,7 @@
         <h2 class="section-title">🏆 Ranking de Tradutores</h2>
         <p class="section-subtitle">Nossos heróis do português — ordenados por avaliações</p>
       </div>
-      <div class="ranking-list" id="rankingList">
-        <!-- Injetado por script.js -->
-      </div>
+      <div class="ranking-list" id="rankingList"></div>
     </div>
   </section>
 
@@ -159,7 +162,6 @@
           <span>Após o envio, sua tradução ficará com status <strong>Pendente</strong> até ser aprovada pela equipe.</span>
         </div>
 
-        <!-- Usando Formspree para envio real — substitua YOUR_FORM_ID pelo seu ID -->
         <form id="submitForm" class="submit-form" action="https://formspree.io/f/mgorkjjl" method="POST" novalidate>
           <div class="form-row">
             <div class="form-group">
@@ -206,7 +208,6 @@
             <input type="url" id="coverUrl" name="coverUrl" placeholder="https://exemplo.com/capa.jpg" />
           </div>
 
-          <!-- Campo oculto para identificar status -->
           <input type="hidden" name="status" value="pendente" />
           <input type="hidden" name="_subject" value="[Sakura Translations] Nova tradução enviada" />
 
@@ -217,7 +218,6 @@
           </div>
         </form>
 
-        <!-- Feedback de envio -->
         <div class="form-success hidden" id="formSuccess">
           <div class="success-icon">🌸</div>
           <h3>Tradução enviada!</h3>
@@ -226,7 +226,6 @@
         </div>
       </div>
 
-      <!-- Painel de Moderação (oculto por padrão, protegido por senha simples) -->
       <div class="mod-panel-toggle">
         <button class="btn btn-ghost btn-small" id="openMod">🔐 Painel de Moderação</button>
       </div>
@@ -238,9 +237,7 @@
         </div>
         <div class="mod-content hidden" id="modContent">
           <h3 class="mod-title">📋 Traduções Pendentes</h3>
-          <div id="pendingList" class="pending-list">
-            <!-- Injetado por script.js -->
-          </div>
+          <div id="pendingList" class="pending-list"></div>
         </div>
       </div>
     </div>
@@ -288,7 +285,6 @@
     <p class="footer-sub">桜の翻訳プロジェクト</p>
   </footer>
 
-  <!-- ======================== TOAST DE NOTIFICAÇÃO ======================== -->
   <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
 
   <script src="script.js"></script>
